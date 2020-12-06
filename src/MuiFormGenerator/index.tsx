@@ -4,6 +4,8 @@ import { Formik } from 'formik'
 import { MuiFormGeneratorProps } from './types'
 import RowGenerator from '../components/RowGenerator'
 import AsyncDiv from '../components/AsyncDiv'
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme } from './theme'
 /*
 idea
       const validationMap = {
@@ -42,19 +44,21 @@ const MuiFormGenerator = (props:MuiFormGeneratorProps) => {
         onSubmit={Submit}
       >
         {(formikProps: any) => {
-            console.log('log: ',{formikProps, props});
             const stateConfig = {
               formikProps
             }
 
           return ( 
             <FormikContextProvider stateConfig={stateConfig}>
+              <ThemeProvider theme={theme}>
               <AsyncDiv isLoading={isLoading}>
                 <form onSubmit={formikProps.handleSubmit}>
                 <RowGenerator Rows={props.blueprint.Rows}/>
                 </form>
 
               </AsyncDiv>
+              </ThemeProvider>
+              
             </FormikContextProvider>
           )
         }

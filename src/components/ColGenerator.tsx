@@ -5,7 +5,6 @@ import InputGenerator from './InputGenerator';
 import ButtonGenerator from './ButtonGenerator';
 
 const ColGenerator = (props:ColProps) => {
-    console.log('log: ColGenerator props', {props})
 
     if(props.hide){
         return null

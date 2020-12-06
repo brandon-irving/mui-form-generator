@@ -10,7 +10,6 @@ const ButtonGenerator = (props: any) => {
         label='',
     } = props
    const { values, dirty } = useFormikContext()
-    console.log('log: ButtonGenerator',{props})
     function handleClick(){
         type !=='submit' && onClick(values)
     }

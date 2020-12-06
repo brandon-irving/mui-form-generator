@@ -14,7 +14,6 @@ const RowGenerator = (props: any) => {
 
     const filteredRows = removeHidden(Rows)
 
-    console.log('log: RowGenerator props', { filteredRows, props })
     return (
         <React.Fragment>
             {
@@ -23,13 +22,13 @@ const RowGenerator = (props: any) => {
                         title = '',
                         Cols=[{}],
                         hide = false,
-                        justify= "flex-start",
+                        justify= "flex-end",
                         divider=false,
                         style={},
                     } = row
                     const Title = () => title
                     const filteredCols = removeHidden(Cols)
-                    console.log('log: row props', { filteredCols, hide, title, row })
+                    if(hide)return null
                     if(divider){
                         return <Divider style={{marginTop:'20px', marginBottom:'20px'}} key={i}/>
                     }

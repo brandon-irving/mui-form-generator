@@ -17,13 +17,16 @@ export interface ColProps {
     Button?:any,
     style?: any,
 }
-// TODO: replace with all properties of inputs
-// interface Input {
-//     Rows: any,
-//     Cols: any,
-//     Inputs: any,
-
-// }
+/* TODO: replace with all properties of inputs
+interface Input {
+    ...HTML_INPUT_PROPS,
+    style=undefined,
+    Component=undefined, custom component, returns formik and input props
+    hide=false, 
+    options, for select fields
+    labelPlacement="end",
+}
+*/
 export interface BlueprintProps {
     Rows: RowProps[],
 
