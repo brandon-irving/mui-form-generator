@@ -12,10 +12,10 @@ export interface ColProps {
     title?:string | any,
     as?: boolean | "auto" | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | undefined,
     Input: any,
+    Inputs?: any,
     hide?: boolean,
     Button?:any,
-
-
+    style?: any,
 }
 // TODO: replace with all properties of inputs
 // interface Input {
@@ -32,5 +32,8 @@ export interface MuiFormGeneratorProps {
     blueprint: any,
     validate?: any,
     initialValues: object,
-    submitConfig?: object,
+    isLoading?:boolean,
+    handleSubmit?: (values:any, formik:any)=>any,
+    cachedStateKey?: string | undefined
+    
 }

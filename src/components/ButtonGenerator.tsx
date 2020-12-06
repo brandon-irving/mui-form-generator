@@ -1,11 +1,27 @@
 import React from 'react'
 import { Button } from '@material-ui/core';
+import { useFormikContext } from 'formik';
 
 const ButtonGenerator = (props: any) => {
-    console.log('log: ButtonGenerator', {props})
+    const {
+        disabled = false,
+        type='button',
+        onClick=()=>{},
+        label='',
+    } = props
+   const { values, dirty } = useFormikContext()
+    console.log('log: ButtonGenerator',{props})
+    function handleClick(){
+        type !=='submit' && onClick(values)
+    }
+    const desiredDisabled = type !=='submit' ? disabled : (disabled || !dirty)
     return (
         <div style={{marginLeft: '10px', marginTop: '20px'} }>
-    <Button {...props} >{props.label}</Button>
+    <Button 
+        {...props} 
+        disabled={desiredDisabled} 
+        onClick={handleClick} 
+    >{label}</Button>
         </div>
     )
 }

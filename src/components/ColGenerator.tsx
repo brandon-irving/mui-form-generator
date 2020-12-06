@@ -15,8 +15,13 @@ const ColGenerator = (props:ColProps) => {
             {
                 props.Button !== undefined ? (<ButtonGenerator {...props.Button}/>):
                 (
-                    <Grid item xs={props.as || true}>
-                    <InputGenerator {...props.Input} />
+                    <Grid item xs={props.as || true} style={props.style || {}}>
+                    {props.title && props.title}
+                    { props.Input && <InputGenerator {...props.Input} />}
+                    { props.Inputs &&  props.Inputs.map((input:any, i:number)=>{
+                        return(<InputGenerator key={i} {...input} />)
+                    })}
+                    
                     </Grid>
                 )
             }

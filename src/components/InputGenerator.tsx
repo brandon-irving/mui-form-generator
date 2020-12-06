@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField, MenuItem, FormGroup, FormControlLabel, Switch } from '@material-ui/core'
+import { TextField, MenuItem, FormGroup, FormControlLabel, Switch, Checkbox,  } from '@material-ui/core'
 
 import { useFormikContext } from 'formik'
 
@@ -19,7 +19,6 @@ const InputGenerator = (props: any) => {
         hide=false,
         options,
         labelPlacement="end",
-
     } = props
 
     const {
@@ -49,6 +48,7 @@ const InputGenerator = (props: any) => {
         onChange: handleFormChange,
         style: desiredStyle,
         select: type==='select'? true : undefined,
+        InputLabelProps: type==='date' ? { ...props.InputLabelProps, shrink: true } : {...props.InputLabelProps}
     }
     console.log('log: InputGenerator props', {values, context, props})
     if(hide){
@@ -57,6 +57,16 @@ const InputGenerator = (props: any) => {
     if(Component){
         const customComponentProps = {formik: context, inputProps: props}
         return(<Component {...customComponentProps} />)
+    }
+    if(type === 'checkbox'){
+        return(
+            <FormControlLabel
+            control={
+              <Checkbox checked={value} onChange={handleChange} name={id} />
+            }
+            label={label}
+          />
+        )
     }
     if(type === 'select'){
         return (

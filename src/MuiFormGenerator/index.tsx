@@ -18,28 +18,28 @@ idea
       }
 */
 const MuiFormGenerator = (props:MuiFormGeneratorProps) => {
-  const [isSubmitting, setisSubmitting] = React.useState(false)
     const {
         initialValues,
         validate,
+        isLoading=false,
+        handleSubmit=()=>{},
+        cachedStateKey
     } = props
+    const desiredInitialValues = cachedStateKey && sessionStorage[cachedStateKey] ? JSON.parse(sessionStorage[cachedStateKey]) : initialValues
     async function validation(values:any){
+      cachedStateKey && sessionStorage.setItem(cachedStateKey, JSON.stringify(values))
         if(validate){
             return await validate(values)
         }else return {}
     }
-    function handleSubmit(values:any){
-      setisSubmitting(true)
-      setTimeout(() => {
-        console.log('log: isSubmitting', isSubmitting)
-        return window.alert(JSON.stringify(values))
-      }, 1000);
+    async function Submit(values:any,formik: any){
+      await handleSubmit(values, formik)
     }
     return (
         <Formik
-        initialValues={initialValues}
+        initialValues={desiredInitialValues}
         validate={validation}
-        onSubmit={handleSubmit}
+        onSubmit={Submit}
       >
         {(formikProps: any) => {
             console.log('log: ',{formikProps, props});
@@ -49,7 +49,7 @@ const MuiFormGenerator = (props:MuiFormGeneratorProps) => {
 
           return ( 
             <FormikContextProvider stateConfig={stateConfig}>
-              <AsyncDiv isLoading={isSubmitting}>
+              <AsyncDiv isLoading={isLoading}>
                 <form onSubmit={formikProps.handleSubmit}>
                 <RowGenerator Rows={props.blueprint.Rows}/>
                 </form>

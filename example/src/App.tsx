@@ -57,11 +57,43 @@ const ExampleFormBluePrint = () => {
           {
             Cols:[
                 {
+                    title: 'CheckBoxes',
+                    // as, hide, title, 
+                    Inputs: [
+                        {
+                            label: 'Check 1',
+                            id: 'check1',
+                            type: 'checkbox',
+                        },
+                        {
+                            label: 'Check 2',
+                            id: 'check2',
+                            type: 'checkbox',
+                        },
+                        {
+                            label: 'Check 3',
+                            id: 'check3',
+                            type: 'checkbox',
+                        },
+                    ]
+                   
+                },
+                {
+                    // as, hide, title, 
+                    Input: {
+                        label: 'Birthday',
+                        id: 'birthday',
+                        type: 'date',
+                    }
+                   
+                },
+                {
                     // as, hide, title, 
                     Input: {
                         label: 'Siblings',
                         id: 'siblings',
                         type: 'select',
+                        multiple: true,
                         options: [{value:'alyssa', label:'Alyssa'},{value:'chris', label:'Chris'},]
                     }
                    
@@ -85,6 +117,9 @@ const ExampleFormBluePrint = () => {
                   Button: {
                       label: 'Cancel',
                       id: 'cancel',
+                      onClick: (props:any)=>{
+                          console.log('log: onclick', props)
+                      }
                   }
                  
               },
@@ -106,7 +141,7 @@ const ExampleFormBluePrint = () => {
   }
 }
 const App = () => {
-    const initialValues = {switch: true, siblings: 'alyssa',firstName:'Brandon', lastName: 'Irving', nickName: 'Silver', age: 29 }
+    const initialValues = {check1: true,check2: true,check3: true,birthday: "1991-10-06", switch: true, siblings: 'alyssa',firstName:'Brandon', lastName: 'Irving', nickName: 'Silver', age: 29 }
     function validate(values:any){
         const errors = {}
         if(!values.firstName.length){
@@ -116,15 +151,20 @@ const App = () => {
         
         return errors
     }
+    function handleSubmit(values:any, formik:any){
+        window.alert(JSON.stringify(values))
+        formik.resetForm()
+        console.log('log: handleSubmit', formik)
+
+    }
   return(
-    <div>
   <MuiFormGenerator  
   validate={validate}
   blueprint={ExampleFormBluePrint()}
   initialValues={initialValues} 
-  submitConfig={{}}
+  handleSubmit={handleSubmit}
+//   cachedStateKey="example1"
   />
-    </div>
   ) 
 }
 
