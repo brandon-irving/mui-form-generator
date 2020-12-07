@@ -1,100 +1,35 @@
 import React from 'react'
-import { MuiFormGenerator } from 'mui-form-generator'
+import SignUpForm from './SignUpForm'
+import SelectForm from './SelectForm'
+import DateUsageForm from './DateUsageForm'
 import 'mui-form-generator/dist/index.css'
-const SignUpFormBluePrint = () => {
-    return ({
-        Rows: [
-            {
-                Cols: [
-                    {
-                        Input:{
-                            id: 'firstName',
-                            name: 'firstName',
-                            type: 'text',
-                            label: 'First Name',
-
-
-                        }
-                    },
-                    {
-                        Input:{
-                            id: 'lastName',
-                            name: 'lastName',
-                            type: 'text',
-                            label: 'Last Name',
-
-                        }
-                    }
-                ]
-            },
-            {
-                Cols: [
-                    {
-                        Input:{
-                            id: 'email',
-                            name: 'email',
-                            type: 'email',
-                            label: 'Email',
-
-                        }
-                    },
-                    {
-                        Input:{
-                            id: 'password',
-                            name: 'password',
-                            type: 'password',
-                            label: 'Password',
-
-                        }
-                    }
-                ]
-            },
-            {
-                Cols: [
-                    {
-                        Button:{
-                            id: 'submit',
-                            name: 'submit',
-                            type: 'submit',
-                            label: 'Submit',
-                        }
-                    },
-                ]
-            },
-        ]
-    })
-}
-const SignUpForm = () => {
-    const initialValues = { firstName: '', lastName: '', email: '', password: '' }
-
-    function validate(values: any) {
-        const errors = {}
-        Object.keys(values).forEach(field=>{
-            const isEmpty = (!values[field]) || (typeof values[field] === 'string' && !values[field].length)
-            if (isEmpty) {
-                errors[field] = 'required'
-            }
-        })
-
-        return errors
+function DividerDiv(props:any){
+    const style = {
+        margin: '10px',
+    borderTop: '1px solid',
+    border: '1px solid',
+    marginTop: '40px',
+    marginBottom: '40px',
     }
-    function handleSubmit(values: any, formik: any) {
-        window.alert(JSON.stringify(values))
-        formik.resetForm()
-    }
-    return (
-        <MuiFormGenerator
-            validate={validate}
-            blueprint={SignUpFormBluePrint()}
-            initialValues={initialValues}
-            handleSubmit={handleSubmit}
-        />
-    )
+   return <div style={style}>
+        {props.children}
+    </div>
 }
 const App = () => {
     return (
         <div>
+            <DividerDiv>
+            <SelectForm />
+            </DividerDiv>
+            <DividerDiv>
+            <DateUsageForm />
+            </DividerDiv>
+            <DividerDiv>
             <SignUpForm />
+            </DividerDiv>
+
+            {/* <DateUsageForm />
+            <SignUpForm /> */}
         </div>
     )
 }

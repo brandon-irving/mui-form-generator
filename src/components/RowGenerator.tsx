@@ -10,12 +10,12 @@ import { Divider } from '@material-ui/core';
 const RowGenerator = (props: any) => {
     const {
         Rows,
+        style
     } = props
 
     const filteredRows = removeHidden(Rows)
-
     return (
-        <React.Fragment>
+        <div style={style}>
             {
                 filteredRows.map((row: RowProps, i: number) => {
                     const {
@@ -33,8 +33,12 @@ const RowGenerator = (props: any) => {
                         return <Divider style={{marginTop:'20px', marginBottom:'20px'}} key={i}/>
                     }
                     return (
-                        <Grid style={style} justify={justify} container key={i} spacing={2}>
-                            <Title />
+                        <React.Fragment key={i}>
+                                                        
+                        <div style={{marginBottom: '15px'}}>
+                        <Title />
+                        </div>
+                        <Grid style={style} justify={justify} container  spacing={2}>
                             {
                                 filteredCols.map((Col, i:number) => {
                                     
@@ -43,10 +47,11 @@ const RowGenerator = (props: any) => {
                             }
 
                         </Grid>
+                        </React.Fragment>
                     )
                 })
             }
-        </React.Fragment>
+        </div>
     )
 }
 

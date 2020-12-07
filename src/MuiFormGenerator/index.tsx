@@ -53,7 +53,7 @@ const MuiFormGenerator = (props:MuiFormGeneratorProps) => {
               <ThemeProvider theme={theme}>
               <AsyncDiv isLoading={isLoading}>
                 <form onSubmit={formikProps.handleSubmit}>
-                <RowGenerator Rows={props.blueprint.Rows}/>
+                <RowGenerator style={props.blueprint.style} Rows={props.blueprint.Rows}/>
                 </form>
 
               </AsyncDiv>

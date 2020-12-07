@@ -5,6 +5,9 @@ export const theme = createMuiTheme({
         MuiTextField: {
           variant: 'outlined',
         },
+        MuiButton:{
+          variant: 'outlined'
+        }
       },
     // palette: {
     //   primary: {

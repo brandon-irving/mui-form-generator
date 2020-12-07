@@ -15,7 +15,7 @@ const ButtonGenerator = (props: any) => {
     }
     const desiredDisabled = type !=='submit' ? disabled : (disabled || !dirty)
     return (
-        <div style={{marginLeft: '10px', marginTop: '20px'} }>
+        <div style={{padding: '8px', marginTop: '20px'} }>
     <Button 
         {...props} 
         disabled={desiredDisabled} 

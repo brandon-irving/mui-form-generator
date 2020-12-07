@@ -63,7 +63,10 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@material-ui/pickers": "^3.2.10",
     "formik": "^2.2.3",
+    "materialui-daterange-picker": "^1.1.92",
     "mui-autocomplete": "^2.0.1"
   }
 }
