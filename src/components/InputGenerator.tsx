@@ -1,5 +1,5 @@
 import React from 'react'
-import { DateRangePicker } from "materialui-daterange-picker";
+import { DateRange, DateRangePicker } from "materialui-daterange-picker";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { TextField, FormGroup, FormControlLabel, Switch, Checkbox, InputAdornment } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility'
@@ -9,11 +9,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { useFormikContext } from 'formik'
 import IconButton from '@material-ui/core/IconButton';
-
-interface DateRangeProps {
-    startDate: Date,
-    endDate: Date
-}
 
 interface OptionProps {
     value: any,
@@ -124,6 +119,7 @@ const SelectInput = (props: any) => {
             obj = { target: { value: option || [] } }
         }
         props.onChange(obj)
+        return obj
     }
     const defaulOption = {value: '', label: 'None Selected'}
     const options = props.multiple ? props.options : [...props.options, defaulOption]
@@ -298,7 +294,7 @@ const DateRangeInput = (props: any) => {
                 initialDateRange={initialDateRange}
                 open={open}
                 toggle={toggle}
-                onChange={(range: DateRangeProps) => handleChange(range)}
+                onChange={(range: DateRange) => handleChange(range)}
             />
         </React.Fragment>
 
