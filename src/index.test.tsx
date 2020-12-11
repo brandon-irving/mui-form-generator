@@ -1,7 +1,7 @@
-import { ExampleComponent } from './index'
+import MuiFormGenerator from './MuiFormGenerator'
 
-describe('ExampleComponent', () => {
+describe('MuiFormGenerator', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(MuiFormGenerator).toBeTruthy()
   })
 })
