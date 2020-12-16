@@ -8,12 +8,16 @@ const ButtonGenerator = (props: any) => {
         type='button',
         onClick=()=>{},
         label='',
+        Component=null
     } = props
    const { values, dirty } = useFormikContext()
     function handleClick(){
         type !=='submit' && onClick(values)
     }
     const desiredDisabled = type !=='submit' ? disabled : (disabled || !dirty)
+    if(Component){
+        return <Component {...props} />
+    }
     return (
         <div style={{padding: '8px', marginTop: '20px'} }>
     <Button 
