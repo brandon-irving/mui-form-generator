@@ -25,7 +25,8 @@ const MuiFormGenerator = (props:MuiFormGeneratorProps) => {
         validate,
         isLoading=false,
         handleSubmit=()=>{},
-        cachedStateKey
+        cachedStateKey,
+        theme: userChoseTheme
     } = props
     const desiredInitialValues = cachedStateKey && sessionStorage[cachedStateKey] ? JSON.parse(sessionStorage[cachedStateKey]) : initialValues
     async function validation(values:any){
@@ -50,7 +51,7 @@ const MuiFormGenerator = (props:MuiFormGeneratorProps) => {
 
           return ( 
             <FormikContextProvider stateConfig={stateConfig}>
-              <ThemeProvider theme={theme}>
+              <ThemeProvider theme={userChoseTheme || theme}>
               <AsyncDiv isLoading={isLoading}>
                 <form onSubmit={formikProps.handleSubmit}>
                 <RowGenerator style={props.blueprint.style} Rows={props.blueprint.Rows}/>

@@ -37,6 +37,7 @@ export interface MuiFormGeneratorProps {
     initialValues: object,
     isLoading?:boolean,
     handleSubmit?: (values:any, formik:any)=>any,
-    cachedStateKey?: string | undefined
+    cachedStateKey?: string | undefined,
+    theme?: any | undefined
     
 }
