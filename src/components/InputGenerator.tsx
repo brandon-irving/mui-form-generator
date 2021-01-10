@@ -125,7 +125,7 @@ function checkIfExists(value: any, defaultValue: any) {
     return value ? value : defaultValue
 }
 
-const SelectInput = (props: any) => {
+export const SelectInput = (props: any) => {
 
     function handleChange(_: any, option: any) {
         const value = option && option.value ? option.value : option
@@ -159,9 +159,7 @@ const SelectInput = (props: any) => {
     )
 }
 
-
-
-const Asynchronous = (props: any)=> {
+export const Asynchronous = (props: any)=> {
     const defaultOptions = props.defaultOptions || [{}]
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState(defaultOptions);
@@ -238,26 +236,27 @@ const Asynchronous = (props: any)=> {
         />
     );
 }
-const TimeField = (props: any)=>{
+
+export const TimeField = (props: any)=>{
     function handleChange(e:any){
         props.onChange({target: {value: e._d}})
     }
     return(<MuiPickersUtilsProvider utils={MomentUtils}><TimePicker  {...props} onChange={handleChange} /></MuiPickersUtilsProvider>)
 }
-const DateField = (props: any)=>{
+export const DateField = (props: any)=>{
     function handleChange(e:any){
         console.log('log: date', e)
         props.onChange({target: {value: e._d}})
     }
     return(<MuiPickersUtilsProvider utils={MomentUtils}><DatePicker  {...props} onChange={handleChange} /></MuiPickersUtilsProvider>)
 }
-const DateTimeField = (props: any)=>{
+export const DateTimeField = (props: any)=>{
     function handleChange(e:any){
         props.onChange({target: {value: e._d}})
     }
     return(<MuiPickersUtilsProvider utils={MomentUtils}><DateTimePicker  {...props} onChange={handleChange} /></MuiPickersUtilsProvider>)
 }
-const DateRangeInput = (props: any) => {
+export const DateRangeInput = (props: any) => {
     const today = new Date()
     const tomorrow = new Date(today)
     tomorrow.setDate(tomorrow.getDate() + 1)
@@ -335,7 +334,7 @@ const DateRangeInput = (props: any) => {
     );
 }
 
-const PasswordInput = (props: any) => {
+export const PasswordInput = (props: any) => {
     const [showPassword, setshowPassword] = React.useState(false)
     function handleIconClick() {
         setshowPassword(!showPassword)
