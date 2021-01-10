@@ -68,7 +68,7 @@ export default function DateUsageForm() {
     return (
         <ExampleContainer>
             <MuiFormGenerator
-                validate={validate}
+                manualValidate={validate}
                 blueprint={DateUsageBluePrint()}
                 initialValues={initialValues}
                 handleSubmit={handleSubmit}

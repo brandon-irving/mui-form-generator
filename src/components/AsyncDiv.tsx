@@ -5,7 +5,7 @@ interface AsyncDivProps {
     children: any
 }
 const AsyncDiv = (props: AsyncDivProps) => {
-    const baseStyle = {width: '100%', margin: '10px', flexGrow: 1, position: "relative"}
+    const baseStyle = {width: 'inherit', margin: '10px', flexGrow: 1, position: "relative"}
     return (
         <div style={props.isLoading ? {...baseStyle, position: "relative", opacity: '0.6', pointerEvents: 'none'} : {...baseStyle, position: "relative"}}>
             {props.children}

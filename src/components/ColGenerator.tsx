@@ -12,7 +12,11 @@ const ColGenerator = (props:ColProps) => {
     return (
         <React.Fragment>
             {
-                props.Button !== undefined ? (<ButtonGenerator {...props.Button}/>):
+                props.Button !== undefined ? (
+                    <Grid item xs={props.as || true} style={props.style || {}}>
+                        <ButtonGenerator {...props.Button}/>
+                        </Grid>
+                ):
                 (
                     <Grid item xs={props.as || true} style={props.style || {}}>
                     {props.title && props.title}

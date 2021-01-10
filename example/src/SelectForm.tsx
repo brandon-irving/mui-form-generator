@@ -132,7 +132,7 @@ export default function SelectForm() {
     return (
         <ExampleContainer>
 <MuiFormGenerator
-            validate={validate}
+            manualValidate={validate}
             blueprint={SelectFormBluePrint()}
             initialValues={initialValues}
             handleSubmit={handleSubmit}

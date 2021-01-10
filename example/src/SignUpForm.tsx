@@ -84,7 +84,7 @@ export default function SignUpForm() {
     return (
         <ExampleContainer>
 <MuiFormGenerator
-            validate={validate}
+            manualValidate={validate}
             blueprint={SignUpFormBluePrint()}
             initialValues={initialValues}
             handleSubmit={handleSubmit}

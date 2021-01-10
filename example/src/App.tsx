@@ -1,8 +1,9 @@
 import React from 'react'
-import SignUpForm from './SignUpForm'
-import SelectForm from './SelectForm'
-import DateUsageForm from './DateUsageForm'
+// import SignUpForm from './SignUpForm'
+// import SelectForm from './SelectForm'
+// import DateUsageForm from './DateUsageForm'
 import 'mui-form-generator/dist/index.css'
+import ExperimentForm from './ExperimentForm'
 function DividerDiv(props:any){
     const style = {
         margin: '10px',
@@ -18,15 +19,19 @@ function DividerDiv(props:any){
 const App = () => {
     return (
         <div>
-            <DividerDiv>
+                        <DividerDiv>
+            <ExperimentForm />
+            </DividerDiv>
+            {/* <DividerDiv>
             <SelectForm />
             </DividerDiv>
             <DividerDiv>
             <DateUsageForm />
-            </DividerDiv>
+            </DividerDiv> 
             <DividerDiv>
             <SignUpForm />
             </DividerDiv>
+*/}
 
             {/* <DateUsageForm />
             <SignUpForm /> */}

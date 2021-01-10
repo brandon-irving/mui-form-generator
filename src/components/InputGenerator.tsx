@@ -6,6 +6,8 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { TimePicker, DatePicker, DateTimePicker, MuiPickersUtilsProvider  } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 
 import { useFormikContext } from 'formik'
 import IconButton from '@material-ui/core/IconButton';
@@ -26,6 +28,7 @@ const InputGenerator = (props: any) => {
         hide = false,
         labelPlacement = "end",
         isAsync = false,
+        rows=4
     } = props
 
     const {
@@ -43,13 +46,14 @@ const InputGenerator = (props: any) => {
 
     function handleFormChange(e: any) {
         onChange({ values, value: e.target.value, formHandler: context })
-        if (type === 'select' || type === 'dateRange') {
+        if (type === 'select' || props.type.includes('date') || type === 'time') {
             return setFieldValue(id, e.target.value)
         }
         return handleChange(e)
     }
     const textFieldProps = {
         ...props,
+        type: (props.type.includes('date') || type === 'time') ? 'text': type,
         helperText,
         value,
         error,
@@ -99,9 +103,20 @@ const InputGenerator = (props: any) => {
         return (
             <PasswordInput {...textFieldProps} />)
     }
-    if (type === 'dateRange') {
-        return (
-            <DateRangeInput {...textFieldProps} />)
+    if (type ==='time') {
+        return (<TimeField  {...textFieldProps} />)
+    }
+    if (type ==='date') {
+        return (<DateField  {...textFieldProps} />)
+    }
+    if (type ==='dateRange') {
+        return (<DateRangeInput  {...textFieldProps} />)
+    }
+    if (type ==='dateTime') {
+        return (<DateTimeField {...textFieldProps}/>)
+    }
+    if (type ==='textArea') {
+        return (<TextField {...textFieldProps}  multiline rows={rows}/>)
     }
     return (<TextField {...textFieldProps} />)
 }
@@ -146,7 +161,7 @@ const SelectInput = (props: any) => {
 
 
 
-function Asynchronous(props: any) {
+const Asynchronous = (props: any)=> {
     const defaultOptions = props.defaultOptions || [{}]
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState(defaultOptions);
@@ -222,6 +237,25 @@ function Asynchronous(props: any) {
             )}
         />
     );
+}
+const TimeField = (props: any)=>{
+    function handleChange(e:any){
+        props.onChange({target: {value: e._d}})
+    }
+    return(<MuiPickersUtilsProvider utils={MomentUtils}><TimePicker  {...props} onChange={handleChange} /></MuiPickersUtilsProvider>)
+}
+const DateField = (props: any)=>{
+    function handleChange(e:any){
+        console.log('log: date', e)
+        props.onChange({target: {value: e._d}})
+    }
+    return(<MuiPickersUtilsProvider utils={MomentUtils}><DatePicker  {...props} onChange={handleChange} /></MuiPickersUtilsProvider>)
+}
+const DateTimeField = (props: any)=>{
+    function handleChange(e:any){
+        props.onChange({target: {value: e._d}})
+    }
+    return(<MuiPickersUtilsProvider utils={MomentUtils}><DateTimePicker  {...props} onChange={handleChange} /></MuiPickersUtilsProvider>)
 }
 const DateRangeInput = (props: any) => {
     const today = new Date()
