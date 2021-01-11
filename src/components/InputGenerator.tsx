@@ -8,9 +8,9 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { TimePicker, DatePicker, DateTimePicker, MuiPickersUtilsProvider  } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-
 import { useFormikContext } from 'formik'
 import IconButton from '@material-ui/core/IconButton';
+import { Add } from '@material-ui/icons';
 
 interface OptionProps {
     value: any,
@@ -153,8 +153,30 @@ export const SelectInput = (props: any) => {
         getOptionLabel={(option: OptionProps) => {
             return option.label || props.value || 'None Selected'
         }}
-        renderInput={(params: any) => <TextField helperText={props.helperText}
-            error={props.error} label={props.label} {...params} />}
+        renderInput={(params: any) => {
+            async function handleClick(e: any){
+                e.preventDefault()
+                e.stopPropagation()
+                await props.appendAddButton(props)
+            }
+            return (
+                <div style={{ display: 'flex', alignItems: 'center'}}>
+            <TextField 
+                {...params} 
+                helperText={props.helperText} 
+                error={props.error} 
+                label={props.label} 
+                />
+                {props.appendAddButton &&
+                <IconButton onClick={handleClick}>
+                <Add />
+              </IconButton>
+                }
+                { props.appendCustomButton }
+                </div>
+            )
+           
+        }}
     />
     )
 }
@@ -191,12 +213,13 @@ export const Asynchronous = (props: any)=> {
         }
     }, [open]);
     function handleChange(option: any) {
-        let obj = { target: { value: option.value || '' } }
+        let obj = { target: { value: option || '' } }
         if (props.multiple) {
             obj = { target: { value: option || [] } }
         }
         props.onChange(obj)
     }
+
     return (
         <Autocomplete
             id={props.id}
@@ -208,31 +231,53 @@ export const Asynchronous = (props: any)=> {
                 setOpen(false);
             }}
             value={props.value}
-            getOptionSelected={(option, value) => option.label === value.label}
-            getOptionLabel={(option: any) => option.label}
+            getOptionSelected={(option, value) => {
+                return option.label === value.label
+            }}
+            getOptionLabel={(option: any) => {
+                if(option.label)return option.label
+                return ''
+            }}
             options={options}
             loading={loading}
             multiple={props.multiple}
             onChange={(_, newValue) => {
                 handleChange(newValue);
             }}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    helperText={props.helperText}
-                    error={props.error}
-                    label={props.label}
-                    InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                            <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                {params.InputProps.endAdornment}
-                            </React.Fragment>
-                        ),
-                    }}
-                />
-            )}
+            renderInput={(params) =>{
+                async function handleClick(e: any){
+                    e.preventDefault()
+                    e.stopPropagation()
+                    await props.appendAddButton(props)
+                }
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center'}}>
+                         <TextField
+                        {...params}
+                        helperText={props.helperText}
+                        error={props.error}
+                        label={props.label}
+                        InputProps={{
+                            ...params.InputProps,
+                            endAdornment: (
+                                <React.Fragment>
+                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                    {params.InputProps.endAdornment}
+                                </React.Fragment>
+                            ),
+                        }}
+                    />
+                        {props.appendAddButton &&
+                        <IconButton onClick={handleClick}>
+                        <Add />
+                      </IconButton>
+                        }
+                        { props.appendCustomButton }
+                    </div>
+                   
+                )
+            } }
+
         />
     );
 }

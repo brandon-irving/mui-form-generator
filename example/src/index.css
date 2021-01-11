@@ -12,3 +12,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.MuiAutocomplete-Custom {
+  top: calc(33% - 14px);
+  right: 0;
+  position: absolute;
+}

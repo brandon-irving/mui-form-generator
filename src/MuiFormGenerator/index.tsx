@@ -86,8 +86,12 @@ function handleValidate(values: any, validate: ValidationProps){
     if(validate[valueKey]){
       const value = values[valueKey] 
 
+      if(!Object.keys(validate[valueKey]).length){
+        validate[valueKey].required = true
+      }
       Object.keys(validate[valueKey]).forEach((validationKey: string)=>{
         const validation = validate[valueKey][validationKey]
+
         const isEmpty = value === null || value === undefined || (!value.length && typeof value === 'string')
         const isNotEmpty = !isEmpty
         const isRequired = validationKey === 'required' && validation && isEmpty

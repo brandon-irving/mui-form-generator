@@ -47,7 +47,6 @@ export interface DropdownProps {
     label: string,
     onClick: () => any,
     disabled?: boolean | undefined
-
 }
 export interface ButtonProps {
     label: string,
