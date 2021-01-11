@@ -51,6 +51,13 @@ const InputGenerator = (props: any) => {
         }
         return handleChange(e)
     }
+    const innerProps = {
+        values, 
+        errors,
+        value,
+        handleFormChange,
+        fieldProps: props,
+    }
     const textFieldProps = {
         ...props,
         type: (props.type.includes('date') || type === 'time') ? 'text': type,
@@ -81,7 +88,7 @@ const InputGenerator = (props: any) => {
     }
     if (type === 'select') {
         if (isAsync) {
-            return (<Asynchronous {...textFieldProps} />)
+            return (<Asynchronous {...textFieldProps} innerProps={innerProps} />)
         }
         return (<SelectInput {...textFieldProps} />)
     }
@@ -128,31 +135,30 @@ function checkIfExists(value: any, defaultValue: any) {
 export const SelectInput = (props: any) => {
 
     function handleChange(_: any, option: any) {
-        const value = option && option.value ? option.value : option
-        let obj = { target: { value: value || '' } }
+        let obj = { target: { value: option || '' } }
         if (props.multiple) {
             obj = { target: { value: option || [] } }
         }
         props.onChange(obj)
         return obj
     }
-    const defaulOption = {value: '', label: 'None Selected'}
-    const options = props.multiple ? props.options : [...props.options, defaulOption]
     return(
         <Autocomplete
         id={props.id}
         value={props.value}
-        options={options}
+        options={props.options}
         onChange={handleChange}
         multiple={props.multiple}
         getOptionSelected={(option, value) => {
-            const getOptions = props.multiple ? option.label === value.label : option.value === value
+            const getOptions = props.multiple ? option.label === value.label : (option == value || option.value == value.value)
             return getOptions
         }}
 
         getOptionLabel={(option: OptionProps) => {
             return option.label || props.value || 'None Selected'
         }}
+
+
         renderInput={(params: any) => {
             async function handleClick(e: any){
                 e.preventDefault()
@@ -195,7 +201,7 @@ export const Asynchronous = (props: any)=> {
         }
 
         (async () => {
-            const response = await props.apiCall()
+            const response = await props.apiCall(props)
             if (active) {
                 setOptions(response);
 
@@ -232,7 +238,8 @@ export const Asynchronous = (props: any)=> {
             }}
             value={props.value}
             getOptionSelected={(option, value) => {
-                return option.label === value.label
+                const getOptions = props.multiple ? option.label === value.label : (option == value || option.value == value.value)
+                return getOptions
             }}
             getOptionLabel={(option: any) => {
                 if(option.label)return option.label
@@ -290,7 +297,6 @@ export const TimeField = (props: any)=>{
 }
 export const DateField = (props: any)=>{
     function handleChange(e:any){
-        console.log('log: date', e)
         props.onChange({target: {value: e._d}})
     }
     return(<MuiPickersUtilsProvider utils={MomentUtils}><DatePicker  {...props} onChange={handleChange} /></MuiPickersUtilsProvider>)

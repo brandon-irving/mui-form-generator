@@ -287,10 +287,12 @@ const assetBlueprintConfig = (props)=>({
             label: 'Link to Area',
             type: 'select',
             isAsync: true,
+            defaultOptions: props.areaOptions,
             apiCall: async()=>{
-                if(!props.areaOptions.length){
+                if(props.loadAreaOptions){
                     const mockData = await mockApiCall()
                     props.setareaOptions(mockData)
+                    props.setloadAreaOptions(false)
                     return mockData
                 }
                 return props.areaOptions
@@ -300,6 +302,61 @@ const assetBlueprintConfig = (props)=>({
             id: 'equipmentId',
             label: 'EquipmentId',
             type: 'text',
+        }],
+        [{
+            colProps: {style: {display: 'flex', justifyContent: 'flex-end'}},
+            Button: {
+                id: 'submit',
+                label: 'Submit',
+                type: 'submit'
+            }
+        }],
+        
+    ]
+})
+const hardwareUnitBlueprintConfig = (props)=>({
+    rows: 5,
+    cols: [1, 1, 1, 1, 1],
+    inputs: [
+        [{
+            id: 'name',
+            label: 'Name',
+            type: 'text',
+        }],
+        [{
+            id: 'type',
+            label: 'Type',
+            type: 'select',
+            options: props.hwuTypeOptions,
+            onChange: (innerProps)=>{
+                const serialNumberPrefix = props.serialNumberRules[innerProps.value.value]
+                const newSerialNumberTitle = props.serialNumberTitle.substring(0,14) + `(${serialNumberPrefix})`
+                props.setserialNumberTitle(newSerialNumberTitle)
+                console.log('log: props',innerProps, props.serialNumberRules[innerProps.value.value])
+            }
+        }],
+        [{
+            id: 'serialNumber',
+            label: `${props.serialNumberTitle}`,
+            type: 'text',
+        }],
+        [{
+            id: 'baseStationId',
+            label: 'Base Station',
+            type: 'select',
+            isAsync: true,
+            defaultOptions: props.baseStationOptions,
+            apiCall: async(innerProps)=>{
+                console.log('log: apiCall innerProps', innerProps)
+                if(props.loadBaseStationOptions){
+                    const mockData = await mockApiCall()
+                    props.setbaseStationOptions(mockData)
+                    props.setloadBaseStationOptions(false)
+                    return mockData
+                }
+                return props.baseStationOptions
+            },
+            appendAddButton: (props)=>console.log('log: props clicked', props)
         }],
         [{
             colProps: {style: {display: 'flex', justifyContent: 'flex-end'}},
@@ -323,4 +380,7 @@ export const AreaFormBluePrint = () => {
 }
 export const AssetFormBluePrint = (props) => {
     return bluePrintGenerator(assetBlueprintConfig(props))
+}
+export const HardwareUnitFormBluePrint = (props) => {
+    return bluePrintGenerator(hardwareUnitBlueprintConfig(props))
 }

@@ -143,7 +143,8 @@ const MuiFormGenerator = (props:MuiFormGeneratorProps) => {
     async function validation(values:any){
       cachedStateKey && sessionStorage.setItem(cachedStateKey, JSON.stringify(values))
         if(manualValidate){
-            return await manualValidate(values)
+          const errors = await manualValidate(values)
+            return errors
         }else if(validate){
           return handleValidate(values, validate)
         }

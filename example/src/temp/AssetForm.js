@@ -5,8 +5,10 @@ import { ExampleContainer } from '../ExampleContainer'
 import { AssetFormBluePrint } from './blueprints' 
 
 export default function AssetForm() {
-    const [areaOptions, setareaOptions] = useState([])
-    const initialValues = { name: '', areaId: null, equipmentId: ''}
+    const [areaOptions, setareaOptions] = useState([{label: "Portugal", value: "Portugal"}])
+    const [loadAreaOptions, setloadAreaOptions] = useState(true)
+
+    const initialValues = { name: '', areaId: {label: "Portugal", value: "Portugal"}, equipmentId: ''}
     const validate = {
         name: {required: true},
         areaId: {required: true},
@@ -19,7 +21,7 @@ export default function AssetForm() {
          <ExampleContainer>
  <MuiFormGenerator
              validate={validate}
-             blueprint={AssetFormBluePrint({areaOptions,setareaOptions})}
+             blueprint={AssetFormBluePrint({loadAreaOptions, setloadAreaOptions, areaOptions,setareaOptions})}
              initialValues={initialValues}
              handleSubmit={handleSubmit}
          />
