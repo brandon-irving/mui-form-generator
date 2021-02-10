@@ -5,7 +5,7 @@ import SplitButton from './SplitButton';
 
 const ButtonGenerator = (props: any) => {
     const {
-        disabled = false,
+        disabled = undefined,
         type = 'button',
         onClick = () => { },
         label = '',
@@ -17,7 +17,15 @@ const ButtonGenerator = (props: any) => {
         type !== 'submit' && onClick(values)
     }
 
-    const desiredDisabled = type !== 'submit' ? disabled : (disabled || !dirty)
+    const submitDisabled = ()=>{
+        let status = true
+        if(disabled === false || dirty){
+            status = false
+        }
+        return status
+    }
+
+    const desiredDisabled = type !== 'submit' ? disabled : submitDisabled()
     if (Component) {
         return <Component {...props} />
     }

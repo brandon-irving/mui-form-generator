@@ -41,6 +41,7 @@ export interface MuiFormGeneratorProps {
     handleSubmit?: (values: any, formik: any) => any,
     cachedStateKey?: string | undefined,
     theme?: any | undefined
+    startDirty?: boolean
 
 }
 export interface DropdownProps {

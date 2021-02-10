@@ -102,6 +102,7 @@ const SelectFormBluePrint = () => {
                             name: 'submit',
                             type: 'submit',
                             label: 'Submit',
+                            disabled: false,
                         }
                     },
                 ]
