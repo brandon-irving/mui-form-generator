@@ -128,9 +128,8 @@ const InputGenerator = (props: any) => {
         returnComponent= (<TextField {...textFieldProps}  multiline rows={rows}/>)
     }
     if (type ==='selectNative') {
-        console.log('log: textFieldProps.options', textFieldProps.options)
         returnComponent= (<TextField {...textFieldProps} select>
-           {textFieldProps.options.map((option:any) => (
+           {textFieldProps.options.map((option: OptionProps) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
