@@ -16,8 +16,10 @@ const SelectFormBluePrint = () => {
                         Input:{
                             id: 'sibling',
                             name: 'sibling',
-                            type: 'select',
+                            type: 'selectNative',
                             label: 'Sibling',
+                            SelectProps:{ native: true },
+                            subscript: 'ruifbrifbrif',
                             options: siblings.map((sibling:string)=>{
                                 return {value: sibling, label: sibling}
                             }),

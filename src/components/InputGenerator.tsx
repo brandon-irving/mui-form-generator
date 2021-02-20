@@ -1,7 +1,7 @@
 import React from 'react'
 import { DateRange, DateRangePicker } from "materialui-daterange-picker";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { TextField, FormGroup, FormControlLabel, Switch, Checkbox, InputAdornment } from '@material-ui/core'
+import { TextField, FormGroup, FormControlLabel, Switch, Checkbox, InputAdornment, FormControl, FormHelperText } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
 import DateRangeIcon from '@material-ui/icons/DateRange';
@@ -28,7 +28,8 @@ const InputGenerator = (props: any) => {
         hide = false,
         labelPlacement = "end",
         isAsync = false,
-        rows=4
+        rows=4,
+        subscript
     } = props
 
     const {
@@ -72,12 +73,13 @@ const InputGenerator = (props: any) => {
     if (hide) {
         return null
     }
+    let returnComponent = <TextField {...textFieldProps} />
     if (Component) {
         const customComponentProps = { formik: context, inputProps: props }
-        return (<Component {...customComponentProps} />)
+        returnComponent= (<Component {...customComponentProps} />)
     }
     if (type === 'checkbox') {
-        return (
+        returnComponent= (
             <FormControlLabel
                 control={
                     <Checkbox checked={value} onChange={handleChange} name={id} />
@@ -88,13 +90,13 @@ const InputGenerator = (props: any) => {
     }
     if (type === 'select') {
         if (isAsync) {
-            return (<Asynchronous {...textFieldProps} innerProps={innerProps} />)
-        }
-        return (<SelectInput {...textFieldProps} />)
+            returnComponent= (<Asynchronous {...textFieldProps} innerProps={innerProps} />)
+        }else
+        returnComponent= (<SelectInput {...textFieldProps} />)
     }
 
     if (type === 'switch') {
-        return (
+        returnComponent= (
             <FormGroup row>
                 <FormControlLabel
                     control={<Switch checked={value} onChange={handleChange} name={id} />}
@@ -107,25 +109,42 @@ const InputGenerator = (props: any) => {
         )
     }
     if (type === 'password') {
-        return (
+        returnComponent= (
             <PasswordInput {...textFieldProps} />)
     }
     if (type ==='time') {
-        return (<TimeField  {...textFieldProps} />)
+        returnComponent= (<TimeField  {...textFieldProps} />)
     }
     if (type ==='date') {
-        return (<DateField  {...textFieldProps} />)
+        returnComponent= (<DateField  {...textFieldProps} />)
     }
     if (type ==='dateRange') {
-        return (<DateRangeInput  {...textFieldProps} />)
+        returnComponent= (<DateRangeInput  {...textFieldProps} />)
     }
     if (type ==='dateTime') {
-        return (<DateTimeField {...textFieldProps}/>)
+        returnComponent= (<DateTimeField {...textFieldProps}/>)
     }
     if (type ==='textArea') {
-        return (<TextField {...textFieldProps}  multiline rows={rows}/>)
+        returnComponent= (<TextField {...textFieldProps}  multiline rows={rows}/>)
     }
-    return (<TextField {...textFieldProps} />)
+    if (type ==='selectNative') {
+        console.log('log: textFieldProps.options', textFieldProps.options)
+        returnComponent= (<TextField {...textFieldProps} select>
+           {textFieldProps.options.map((option:any) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+
+        </TextField>)
+    }
+    return (
+        <FormControl style={{width: '100%'}}>
+            { returnComponent}
+        <FormHelperText>{subscript}</FormHelperText>
+      </FormControl>
+       
+        )
 }
 
 function checkIfExists(value: any, defaultValue: any) {
