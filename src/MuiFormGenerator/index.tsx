@@ -15,8 +15,8 @@ interface PasswordValidationProps {
 
 }
 interface ValidationProps {
-  required?: boolean,
-  isEmail?: boolean,
+  required?: boolean | string,
+  isEmail?: boolean | string,
   minLength?: [number, string],
   maxLength?: [number, string],
   min?: [number, string],
