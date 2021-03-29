@@ -11,6 +11,7 @@ npm install --save mui-form-generator
 ```
 ## Props:
 ```
+// Note: Docs are still a WIP
 MuiFormGeneratorProps {
     blueprint: BlueprintProps, // Must be in a bluePrint format
     validate?: {
@@ -59,6 +60,14 @@ ColProps {
     Button?: any,
     style?: any,
     justifyContent?: string,
+}
+Input {
+    ...HTML_INPUT_PROPS,
+    style: object,
+    Component: ()=>any, custom component, returns formik and input props
+    hide: boolean, 
+    options: optionProps[], for select fields
+    labelPlacement: "end" | "start",
 }
 ```
 
