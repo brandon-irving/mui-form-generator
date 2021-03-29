@@ -14,8 +14,8 @@ npm install --save mui-form-generator
 MuiFormGeneratorProps {
     blueprint: BlueprintProps, // Must be in a bluePrint format
     validate?: {
-  required?: boolean,
-  isEmail?: boolean,
+  required?: boolean | string, // if boolean, the default error message will be "Required"
+  isEmail?: boolean | string,
   minLength?: [number, string],
   maxLength?: [number, string],
   min?: [number, string],
