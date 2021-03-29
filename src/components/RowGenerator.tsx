@@ -53,7 +53,7 @@ const RowGenerator = (props: any) => {
                     return (
                         <React.Fragment key={i}>
 
-                            <div style={{ marginBottom: '15px', marginTop: '15px' }}>
+                            <div style={{ marginBottom: '15px', marginTop: !i ? '0px' : '35px' }}>
                                 <Title />
                             </div>
                             <Grid style={style} justify={justify} container spacing={2}>

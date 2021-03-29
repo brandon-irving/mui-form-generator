@@ -1,11 +1,10 @@
 import React from 'react'
 import { DateRange, DateRangePicker } from "materialui-daterange-picker";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { TextField, FormGroup, FormControlLabel, Switch, Checkbox, InputAdornment, FormControl, FormHelperText } from '@material-ui/core'
+import { TextField, FormGroup, FormControlLabel, Switch, Checkbox, InputAdornment, FormControl, FormHelperText, Grid } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
 import DateRangeIcon from '@material-ui/icons/DateRange';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { TimePicker, DatePicker, DateTimePicker, MuiPickersUtilsProvider  } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { useFormikContext } from 'formik'
@@ -29,7 +28,7 @@ const InputGenerator = (props: any) => {
         labelPlacement = "end",
         isAsync = false,
         rows=4,
-        subscript
+        subscript,
     } = props
 
     const {
@@ -47,21 +46,15 @@ const InputGenerator = (props: any) => {
 
     function handleFormChange(e: any) {
         onChange({ values, value: e.target.value, formHandler: context })
-        if (type === 'select' || props.type.includes('date') || type === 'time') {
+        if (type === 'select' || props.type?.includes('date') || type === 'time') {
             return setFieldValue(id, e.target.value)
         }
         return handleChange(e)
     }
-    const innerProps = {
-        values, 
-        errors,
-        value,
-        handleFormChange,
-        fieldProps: props,
-    }
+
     const textFieldProps = {
         ...props,
-        type: (props.type.includes('date') || type === 'time') ? 'text': type,
+        type: (props.type?.includes('date') || type === 'time') ? 'text': type,
         helperText,
         value,
         error,
@@ -73,10 +66,10 @@ const InputGenerator = (props: any) => {
     if (hide) {
         return null
     }
-    let returnComponent = <TextField {...textFieldProps} />
+    let returnComponent = <TextComponent {...textFieldProps} />
     if (Component) {
         const customComponentProps = { formik: context, inputProps: props }
-        returnComponent= (<Component {...customComponentProps} />)
+        returnComponent = (<Component {...customComponentProps} />)
     }
     if (type === 'checkbox') {
         returnComponent= (
@@ -89,12 +82,8 @@ const InputGenerator = (props: any) => {
         )
     }
     if (type === 'select') {
-        if (isAsync) {
-            returnComponent= (<Asynchronous {...textFieldProps} innerProps={innerProps} />)
-        }else
-        returnComponent= (<SelectInput {...textFieldProps} />)
+        returnComponent= (<SelectInput {...textFieldProps} isAsync={isAsync} formikProps={context} />)
     }
-
     if (type === 'switch') {
         returnComponent= (
             <FormGroup row>
@@ -104,8 +93,6 @@ const InputGenerator = (props: any) => {
                     labelPlacement={labelPlacement}
                 />
             </FormGroup>
-
-
         )
     }
     if (type === 'password') {
@@ -128,7 +115,10 @@ const InputGenerator = (props: any) => {
         returnComponent= (<TextField {...textFieldProps}  multiline rows={rows}/>)
     }
     if (type ==='selectNative') {
-        returnComponent= (<TextField {...textFieldProps} select>
+        returnComponent= (
+        <TextField 
+        {...textFieldProps} 
+        select >
            {textFieldProps.options.map((option: OptionProps) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -150,10 +140,30 @@ function checkIfExists(value: any, defaultValue: any) {
     return value ? value : defaultValue
 }
 
-export const SelectInput = (props: any) => {
+export const TextComponent = (props: any)=>{
+    return (<TextField {...props} />)
+}
 
+export const SelectInput = (props: any) => {
+    const [isLoading, setisLoading] = React.useState(false)
+    const [loadedData, setloadedData] = React.useState(false)
+    const [options, setoptions] = React.useState(props.options || [])
+  
+    async function getOptions(){
+      if(loadedData) return
+      setisLoading(true)
+      try{
+        const newOptions =  props.asyncCall && await props.asyncCall() || []
+        setoptions(newOptions)
+      }catch(e){
+        setoptions(props.options)
+        console.error('Mui-Form-Generator Error: AsyncSelect', e)
+      }
+      setloadedData(true)
+      setisLoading(false)
+    }
     function handleChange(_: any, option: any) {
-        let obj = { target: { value: option || '' } }
+        let obj = { target: { value: option } }
         if (props.multiple) {
             obj = { target: { value: option || [] } }
         }
@@ -164,11 +174,13 @@ export const SelectInput = (props: any) => {
         <Autocomplete
         id={props.id}
         value={props.value}
-        options={props.options}
+        options={options}
         onChange={handleChange}
+        onFocus={ props.isAsync ? getOptions : ()=>null}
         multiple={props.multiple}
+        getOptionDisabled={()=>isLoading}
         getOptionSelected={(option, value) => {
-            const getOptions = props.multiple ? option.label === value.label : (option == value || option.value == value.value)
+            const getOptions = props.multiple ? option.label === value.label : (option.value == value || option.value == value.value)
             return getOptions
         }}
 
@@ -204,109 +216,6 @@ export const SelectInput = (props: any) => {
     />
     )
 }
-
-export const Asynchronous = (props: any)=> {
-    const defaultOptions = props.defaultOptions || [{}]
-    const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState(defaultOptions);
-    const loading = open && options.length === 0;
-
-    React.useEffect(() => {
-        let active = true;
-
-        if (!loading) {
-            return undefined;
-        }
-
-        (async () => {
-            const response = await props.apiCall(props)
-            if (active) {
-                setOptions(response);
-
-            }
-        })();
-
-        return () => {
-            active = false;
-        };
-    }, [loading]);
-
-    React.useEffect(() => {
-        if (!open) {
-            setOptions([]);
-        }
-    }, [open]);
-    function handleChange(option: any) {
-        let obj = { target: { value: option || '' } }
-        if (props.multiple) {
-            obj = { target: { value: option || [] } }
-        }
-        props.onChange(obj)
-    }
-
-    return (
-        <Autocomplete
-            id={props.id}
-            open={open}
-            onOpen={() => {
-                setOpen(true);
-            }}
-            onClose={() => {
-                setOpen(false);
-            }}
-            value={props.value}
-            getOptionSelected={(option, value) => {
-                const getOptions = props.multiple ? option.label === value.label : (option == value || option.value == value.value)
-                return getOptions
-            }}
-            getOptionLabel={(option: any) => {
-                if(option.label)return option.label
-                return ''
-            }}
-            options={options}
-            loading={loading}
-            multiple={props.multiple}
-            onChange={(_, newValue) => {
-                handleChange(newValue);
-            }}
-            renderInput={(params) =>{
-                async function handleClick(e: any){
-                    e.preventDefault()
-                    e.stopPropagation()
-                    await props.appendAddButton(props)
-                }
-                return (
-                    <div style={{ display: 'flex', alignItems: 'center'}}>
-                         <TextField
-                        {...params}
-                        helperText={props.helperText}
-                        error={props.error}
-                        label={props.label}
-                        InputProps={{
-                            ...params.InputProps,
-                            endAdornment: (
-                                <React.Fragment>
-                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                    {params.InputProps.endAdornment}
-                                </React.Fragment>
-                            ),
-                        }}
-                    />
-                        {props.appendAddButton &&
-                        <IconButton onClick={handleClick}>
-                        <Add />
-                      </IconButton>
-                        }
-                        { props.appendCustomButton }
-                    </div>
-                   
-                )
-            } }
-
-        />
-    );
-}
-
 export const TimeField = (props: any)=>{
     function handleChange(e:any){
         props.onChange({target: {value: e._d}})
@@ -364,10 +273,11 @@ export const DateRangeInput = (props: any) => {
         return
     }
     return (
-        <React.Fragment>
+        <Grid container spacing={2}>
+            <Grid item sm={6}>
             <TextField
                 label="Start"
-                style={{ marginRight: '10px' }}
+                style={{ width: '100%' }}
                 onFocus={() => setOpen(true)}
                 onChange={handleEmptyChange}
                 value={dateFormatter(dateRange.startDate)}
@@ -378,8 +288,11 @@ export const DateRangeInput = (props: any) => {
                     </InputAdornment>,
                 }}
             />
-            <TextField
+            </Grid>
+           <Grid item sm={6}>
+           <TextField
                 label="End"
+                style={{ width: '100%' }}
                 onFocus={() => setOpen(true)}
                 onChange={handleEmptyChange}
                 value={dateFormatter(dateRange.endDate)}
@@ -390,6 +303,8 @@ export const DateRangeInput = (props: any) => {
                     </InputAdornment>,
                 }}
             />
+           </Grid>
+           
             <DateRangePicker
                 minDate={minDate}
                 maxDate={maxDate}
@@ -398,7 +313,7 @@ export const DateRangeInput = (props: any) => {
                 toggle={toggle}
                 onChange={(range: DateRange) => handleChange(range)}
             />
-        </React.Fragment>
+        </Grid>
 
     );
 }

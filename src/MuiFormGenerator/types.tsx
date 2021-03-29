@@ -17,6 +17,7 @@ export interface ColProps {
     hide?: boolean,
     Button?: any,
     style?: any,
+    justifyContent?: string,
 }
 /* TODO: replace with all properties of inputs
 interface Input {
