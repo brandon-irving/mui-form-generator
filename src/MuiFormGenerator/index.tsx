@@ -91,7 +91,6 @@ function handleValidate(values: any, validate: ValidationProps){
       }
       Object.keys(validate[valueKey]).forEach((validationKey: string)=>{
         const validation = validate[valueKey][validationKey]
-
         const isEmpty = value === null || value === undefined || (!value.length && typeof value === 'string')
         const isNotEmpty = !isEmpty
         const isRequired = validationKey === 'required' && validation && isEmpty
@@ -126,7 +125,7 @@ function handleValidate(values: any, validate: ValidationProps){
     
     return accumulator
   }, {})
-
+console.log('log: errors', {errors})
   return errors
 }
 const MuiFormGenerator = (props:MuiFormGeneratorProps) => {

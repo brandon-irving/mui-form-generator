@@ -199,6 +199,16 @@ const SignUpFormBluePrint = () => {
                     {
                         justifyContent: 'flex-end',
                         Button: {
+                            id: 'delete',
+                            name: 'delete',
+                            type: 'button',
+                            label: 'Delete',
+                            variant: 'secondary'
+                        }
+                    },
+                    {
+                        justifyContent: 'flex-end',
+                        Button: {
                             id: 'signupSubmit',
                             name: 'submit',
                             type: 'submit',
@@ -213,16 +223,16 @@ const SignUpFormBluePrint = () => {
 export default function ExampleForm() {
     const initialValues = { }
 
-    function validate(values: any) {
-        const errors = {}
-        Object.keys(values).forEach(field => {
-            const isEmpty = (Array.isArray(values[field]) && !values[field].length) || (!values[field]) || (typeof values[field] === 'string' && !values[field].length)
-            if (isEmpty) {
-                errors[field] = 'required'
-            }
-        })
-        return errors
-    }
+    // function validate(values: any) {
+    //     const errors = {}
+    //     Object.keys(values).forEach(field => {
+    //         const isEmpty = (Array.isArray(values[field]) && !values[field].length) || (!values[field]) || (typeof values[field] === 'string' && !values[field].length)
+    //         if (isEmpty) {
+    //             errors[field] = 'required'
+    //         }
+    //     })
+    //     return errors
+    // }
     function handleSubmit(values: any, formik: any) {
         window.alert(JSON.stringify(values))
         formik.resetForm()
@@ -230,7 +240,8 @@ export default function ExampleForm() {
     return (
         <ExampleContainer>
             <MuiFormGenerator
-                manualValidate={validate}
+                // manualValidate={validate}
+                validate={{singleSelect: {required: true}}}
                 blueprint={SignUpFormBluePrint()}
                 initialValues={initialValues}
                 handleSubmit={handleSubmit}

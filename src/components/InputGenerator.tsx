@@ -29,6 +29,7 @@ const InputGenerator = (props: any) => {
         isAsync = false,
         rows=4,
         subscript,
+        disabled
     } = props
 
     const {
@@ -59,7 +60,7 @@ const InputGenerator = (props: any) => {
         value,
         error,
         onChange: handleFormChange,
-        style: desiredStyle,
+        style: {...desiredStyle, backgroundColor: disabled ? 'gainsboro' : 'white'},
         select: type === 'select' ? true : undefined,
         InputLabelProps: type === 'date' ? { ...props.InputLabelProps, shrink: true } : { ...props.InputLabelProps },
     }
@@ -174,6 +175,7 @@ export const SelectInput = (props: any) => {
         <Autocomplete
         id={props.id}
         value={props.value}
+        disabled={props.disabled}
         options={options}
         onChange={handleChange}
         onFocus={ props.isAsync ? getOptions : ()=>null}
@@ -202,9 +204,11 @@ export const SelectInput = (props: any) => {
                 helperText={props.helperText} 
                 error={props.error} 
                 label={props.label} 
+                style={props.disabled ? {backgroundColor: 'gainsboro'} : {}}
+
                 />
                 {props.appendAddButton &&
-                <IconButton onClick={handleClick}>
+                <IconButton disabled={props.disabled} onClick={handleClick}>
                 <Add />
               </IconButton>
                 }
